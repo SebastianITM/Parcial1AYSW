@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DBVentasComputadoresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Agencia">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__agencia_i__59FA5E80" FromRole="Agencia" ToRole="Venta" />
+  </EntityType>
+  <EntityType Name="Cliente">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="telefono" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__cliente_i__5812160E" FromRole="Cliente" ToRole="Venta" />
+  </EntityType>
+  <EntityType Name="Computador">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="procesadores" Type="Int32" Nullable="false" />
+    <Property Name="marca_procesador" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="disco_duro" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="memoria" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="componentes" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="tipo_computador_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TipoComputador" Relationship="Self.FK__Computado__tipo___5441852A" FromRole="Computador" ToRole="TipoComputador" />
+    <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__computado__59063A47" FromRole="Computador" ToRole="Venta" />
+  </EntityType>
+  <EntityType Name="TipoComputador">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tipo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Computadors" Relationship="Self.FK__Computado__tipo___5441852A" FromRole="TipoComputador" ToRole="Computador" />
+  </EntityType>
+  <EntityType Name="Venta">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Precision="3" />
+    <Property Name="cliente_id" Type="Int32" Nullable="false" />
+    <Property Name="computador_id" Type="Int32" Nullable="false" />
+    <Property Name="agencia_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Agencia" Relationship="Self.FK__Venta__agencia_i__59FA5E80" FromRole="Venta" ToRole="Agencia" />
+    <NavigationProperty Name="Cliente" Relationship="Self.FK__Venta__cliente_i__5812160E" FromRole="Venta" ToRole="Cliente" />
+    <NavigationProperty Name="Computador" Relationship="Self.FK__Venta__computado__59063A47" FromRole="Venta" ToRole="Computador" />
+  </EntityType>
+  <Association Name="FK__Venta__agencia_i__59FA5E80">
+    <End Role="Agencia" Type="Self.Agencia" Multiplicity="1" />
+    <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Agencia">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Venta">
+        <PropertyRef Name="agencia_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venta__cliente_i__5812160E">
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+    <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cliente">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Venta">
+        <PropertyRef Name="cliente_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Computado__tipo___5441852A">
+    <End Role="TipoComputador" Type="Self.TipoComputador" Multiplicity="1" />
+    <End Role="Computador" Type="Self.Computador" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoComputador">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Computador">
+        <PropertyRef Name="tipo_computador_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venta__computado__59063A47">
+    <End Role="Computador" Type="Self.Computador" Multiplicity="1" />
+    <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Computador">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Venta">
+        <PropertyRef Name="computador_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBVentasComputadoresEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Agencias" EntityType="Self.Agencia" />
+    <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+    <EntitySet Name="Computadors" EntityType="Self.Computador" />
+    <EntitySet Name="TipoComputadors" EntityType="Self.TipoComputador" />
+    <EntitySet Name="Ventas" EntityType="Self.Venta" />
+    <AssociationSet Name="FK__Venta__agencia_i__59FA5E80" Association="Self.FK__Venta__agencia_i__59FA5E80">
+      <End Role="Agencia" EntitySet="Agencias" />
+      <End Role="Venta" EntitySet="Ventas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venta__cliente_i__5812160E" Association="Self.FK__Venta__cliente_i__5812160E">
+      <End Role="Cliente" EntitySet="Clientes" />
+      <End Role="Venta" EntitySet="Ventas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Computado__tipo___5441852A" Association="Self.FK__Computado__tipo___5441852A">
+      <End Role="TipoComputador" EntitySet="TipoComputadors" />
+      <End Role="Computador" EntitySet="Computadors" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venta__computado__59063A47" Association="Self.FK__Venta__computado__59063A47">
+      <End Role="Computador" EntitySet="Computadors" />
+      <End Role="Venta" EntitySet="Ventas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
